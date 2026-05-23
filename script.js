@@ -1,67 +1,93 @@
 document.addEventListener("DOMContentLoaded", function () {
 
   // ================= MENU TOGGLE =================
-  const navLinks = document.getElementById("navLinks");
+  // FIXED: Changed to querySelector to correctly target your HTML class ".nav-links"
+  const navLinks = document.querySelector(".nav-links");
 
   window.toggleMenu = function () {
-    navLinks.classList.toggle("active");
+    if (navLinks) {
+      navLinks.classList.toggle("active");
+    }
   };
 
-  particlesJS("particles-js", {
-  particles: {
-    number: { value: 80 },
-    color: { value: "#38bdf8" },
-    shape: { type: "circle" },
-    opacity: { value: 0.5 },
-    size: { value: 3 },
-    line_linked: {
-      enable: true,
-      color: "#38bdf8",
-      opacity: 0.4
-    },
-    move: {
-      enable: true,
-      speed: 2
-    }
-  }
-});
+  // Close mobile menu automatically when a link is clicked
+  document.querySelectorAll(".nav-links a").forEach(link => {
+    link.addEventListener("click", () => {
+      if (navLinks) navLinks.classList.remove("active");
+    });
+  });
 
-// ================= NEW CONTACT FORM SUBMISSION =================
+  // ================= PARTICLES BACKGROUND =================
+  if (typeof particlesJS !== "undefined" && document.getElementById("particles-js")) {
+    particlesJS("particles-js", {
+      particles: {
+        number: { value: 80 },
+        color: { value: "#38bdf8" },
+        shape: { type: "circle" },
+        opacity: { value: 0.5 },
+        size: { value: 3 },
+        line_linked: {
+          enable: true,
+          color: "#38bdf8",
+          opacity: 0.4
+        },
+        move: {
+          enable: true,
+          speed: 2
+        }
+      }
+    });
+  }
+
+  // ================= CONTACT FORM SUBMISSION =================
   const contactForm = document.querySelector(".ui-contact-form");
 
   if (contactForm) {
     contactForm.addEventListener("submit", function (event) {
-      // Prevents the browser from reloading the page on submit
       event.preventDefault();
 
-      // Grabbing the values from the form inputs
       const name = contactForm.querySelector('input[type="text"]').value;
       const email = contactForm.querySelector('input[type="email"]').value;
       const phone = contactForm.querySelector('input[type="tel"]').value;
-      // Selecting the second text input which is used as the message field
-      const message = contactForm.querySelectorAll('input[type="text"]')[1].value;
+      // Fixed extraction to safely target the second text element for the message input
+      const textInputs = contactForm.querySelectorAll('input[type="text"]');
+      const message = textInputs[1] ? textInputs[1].value : "";
 
-      // Log data to console for testing/debugging
       console.log("Form Submitted Successfully!");
       console.log(`Name: ${name}, Email: ${email}, Phone: ${phone}, Message: ${message}`);
 
-      // Optional: Trigger a clean success alert
       alert(`Thank you, ${name}! Your message has been sent successfully.`);
-
-      // Resets the input fields back to empty
       contactForm.reset();
     });
   }
 
-function toggleProject(element) {
-  const card = element.parentElement;
-  card.classList.toggle("active");
-}
+  // ================= PROJECT CARDS ACCORDION =================
+  // Cleaned up and bound directly to your dynamic click listeners safely
+  document.querySelectorAll(".project-title").forEach((title) => {
+    title.addEventListener("click", () => {
+      const card = title.parentElement;
+      if (card) {
+        card.classList.toggle("active");
+      }
+    });
+  });
 
-window.addEventListener("load", function () {
-  document.getElementById("loader").style.display = "none";
-});
+  // Global helper window fallback matching your inline HTML triggers
+  window.toggleProject = function (element) {
+    if (element) {
+      const card = element.parentElement;
+      if (card) card.classList.toggle("active");
+    }
+  };
 
+  // ================= UTILITY: COPY TO CLIPBOARD =================
+  window.copyText = function (text) {
+    navigator.clipboard.writeText(text).then(() => {
+      alert("Copied: " + text);
+    }).catch(err => {
+      console.error("Could not copy text: ", err);
+    });
+  };
 
   // ================= TYPING ANIMATION =================
   const textArray = [
@@ -105,7 +131,7 @@ window.addEventListener("load", function () {
 
   typeEffect();
 
-  // ================= SCROLL REVEAL =================
+  // ================= SCROLL REVEAL (FADE ANIMATION) =================
   const sections = document.querySelectorAll("section");
 
   const observer = new IntersectionObserver((entries) => {
@@ -118,35 +144,10 @@ window.addEventListener("load", function () {
     threshold: 0.1
   });
 
-  function copyText(text) {
-  navigator.clipboard.writeText(text);
-  alert("Copied: " + text);
-}
   sections.forEach((section) => {
     section.classList.add("hidden");
     observer.observe(section);
   });
-
-  function toggleProject(element) {
-  const card = element.parentElement;
-
-  card.classList.toggle("active");
-}
-function toggleProject(element) {
-  const card = element.parentElement;
-  card.classList.toggle("active");
-}
-document.querySelectorAll(".project-title").forEach((title) => {
-  title.addEventListener("click", () => {
-    const card = title.parentElement;
-    card.classList.toggle("active");
-  });
-});
-
-function copyText(text) {
-  navigator.clipboard.writeText(text);
-  alert("Copied: " + text);
-}
 
   // ================= ACTIVE NAV LINK ON SCROLL =================
   const navItems = document.querySelectorAll(".nav-links a");
@@ -155,20 +156,27 @@ function copyText(text) {
     let current = "";
 
     sections.forEach((section) => {
-      const sectionTop = section.offsetTop - 100;
-
-      if (scrollY >= sectionTop) {
+      const sectionTop = section.offsetTop - 120;
+      if (window.scrollY >= sectionTop) {
         current = section.getAttribute("id");
       }
     });
 
     navItems.forEach((item) => {
       item.classList.remove("active-link");
-
-      if (item.getAttribute("href").includes(current)) {
+      const href = item.getAttribute("href");
+      if (href && href.includes(current)) {
         item.classList.add("active-link");
       }
     });
   });
+});
 
+// ================= LOADER HIDE =================
+// Placed globally outside DOM wrappers to guarantee it clears out even if files load slowly
+window.addEventListener("load", function () {
+  const loader = document.getElementById("loader");
+  if (loader) {
+    loader.style.display = "none";
+  }
 });
