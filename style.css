@@ -840,17 +840,54 @@ footer {
     display: block;
   }
 
-  .home-content h1 { 
-    font-size: 2rem !important; /* Makes your "Hi, I'm Vaishnavi" text smaller on mobile */
-    line-height: 1.4 !important; /* Fixes the overlap by adding space below it */
+ /* --- Fixed Mobile Hero Section (Overlapping Fix) --- */
+  .hero {
+    flex-direction: column-reverse; /* Stacks image nicely relative to text on mobile */
+    padding-top: 120px !important;
+    text-align: center;
   }
 
-  .home-content h3 {
-    font-size: 1.3rem !important;
-    margin-top: 12px !important; /* Pushes "a Full Stack Developer" cleanly below your name */
+  .hero-content h1 { 
+    font-size: 1.8rem !important; /* Resizes "Hi, I'm Vaishnavi" */
+    line-height: 1.4 !important;  /* Gives vertical room so lines don't mash */
+    margin-bottom: 10px !important;
   }
-  .about-content { 
-    padding: 20px !important; /* Gives the text container breathing room on the sides */
+
+  .hero-content h2.typing-text {
+    font-size: 1.4rem !important;
+    line-height: 1.4 !important;
+    margin-bottom: 10px !important;
+  }
+
+  .hero-content p {
+    font-size: 0.9rem !important;
+    margin-top: 10px !important;
+    line-height: 1.5 !important;
+  }
+
+  .ai-box {
+    font-size: 0.85rem !important;
+    padding: 10px !important;
+    margin: 15px auto !important;
+    width: 95% !important;
+  }
+
+  /* --- Fixed About Me Section (Squeezing Fix) --- */
+  .about {
+    padding: 40px 20px !important; /* Adds padding on the left and right sides of the phone screen */
+  }
+
+  .about-container { 
+    padding: 15px !important;   /* Adds internal padding to the text box wrapper */
+    width: 100% !important;
+    box-sizing: border-box !important;
+  }
+
+  .about-container p {
+    font-size: 0.95rem !important;
+    line-height: 1.6 !important;
+    text-align: left;            /* Keeps your bio paragraphs perfectly clean to read */
+    margin-bottom: 15px !important;
   }
 }
 
