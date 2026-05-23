@@ -839,6 +839,19 @@ footer {
   .menu-btn {
     display: block;
   }
+
+  .home-content h1 { 
+    font-size: 2rem !important; /* Makes your "Hi, I'm Vaishnavi" text smaller on mobile */
+    line-height: 1.4 !important; /* Fixes the overlap by adding space below it */
+  }
+
+  .home-content h3 {
+    font-size: 1.3rem !important;
+    margin-top: 12px !important; /* Pushes "a Full Stack Developer" cleanly below your name */
+  }
+  .about-content { 
+    padding: 20px !important; /* Gives the text container breathing room on the sides */
+  }
 }
 
 @media (max-width: 600px) {
